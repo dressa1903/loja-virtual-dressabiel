@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>📚 Loja Moderna de Livros</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Poppins:wght@400;600&display=swap');
+
+    :root {
+      --red-primary: #e63946;
+      --red-dark: #a4161a;
+      --accent-light: #ff7675;
+      --background: #f1f1f1;
+      --text-color: #2d3436;
+      --shadow-light: rgba(198, 57, 70, 0.4);
+      --shadow-dark: rgba(0, 0, 0, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--background);
+      color: var(--text-color);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      background: linear-gradient(to right, var(--red-dark), var(--red-primary));
+      color: #fff;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      letter-spacing: 1.2px;
+      box-shadow: 0 3px 15px var(--shadow-dark);
+      animation: fadeInDown 1s ease forwards;
+      user-select: none;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .genre-section {
+      padding: 3rem 1rem 1rem;
+      animation: fadeInUp 1.2s ease forwards;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .genre-section h2 {
+      color: var(--red-dark);
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 1.8rem;
+      font-size: 2rem;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      opacity: 0;
+      animation: fadeInUp 1.5s ease forwards;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .book {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px var(--shadow-dark);
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .book:hover {
+      transform: translateY(-8px) scale(1.04);
+      box-shadow: 0 15px 35px var(--shadow-dark);
+    }
+
+    .book img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      filter: grayscale(30%) brightness(0.92);
+      transition: filter 0.4s ease, transform 0.4s ease;
+      border-bottom: 3px solid var(--red-primary);
+    }
+
+    .book:hover img {
+      filter: grayscale(0) brightness(1) saturate(1.2);
+      transform: scale(1.08);
+    }
+
+    .book h3 {
+      font-size: 1.25rem;
+      margin: 1rem 1rem 0.4rem;
+      color: var(--red-dark);
+      font-weight: 600;
+    }
+
+    .book p {
+      margin: 0 1rem 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--red-primary);
+      letter-spacing: 0.03em;
+    }
+
+    .book button {
+      margin: 0 1rem 1.2rem;
+      padding: 0.75rem 0;
+      background: var(--red-primary);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 8px var(--shadow-light);
+      user-select: none;
+    }
+
+    .book button::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 0; height: 0;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+      pointer-events: none;
+    }
+
+    .book button:hover {
+      background: var(--red-dark);
+      transform: scale(1.07);
+    }
+
+    .book button:active::after {
+      width: 200px;
+      height: 200px;
+    }
+
+    .cart {
+      background: #fff;
+      color: var(--text-color);
+      border-radius: 18px;
+      margin: 3rem auto 4rem;
+      padding: 2rem 2rem 2.5rem;
+      max-width: 480px;
+      box-shadow: 0 8px 25px var(--shadow-dark);
+      text-align: center;
+      animation: fadeInUp 1.4s ease forwards;
+      opacity: 0;
+      user-select: none;
+    }
+
+    .cart h3 {
+      margin-bottom: 1.5rem;
+      font-family: 'Playfair Display', serif;
+      color: var(--red-dark);
+      font-size: 2rem;
+      letter-spacing: 0.02em;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      margin-bottom: 1.8rem;
+      max-height: 250px;
+      overflow-y: auto;
+      border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart li {
+      border-bottom: 1px solid #ddd;
+      padding: 0.6rem 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--red-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart li:last-child {
+      border-bottom: none;
+    }
+
+    .cart .total {
+      font-size: 1.5rem;
+      margin-bottom: 1.8rem;
+      color: var(--red-primary);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* Forma de pagamento */
+    #payment-method {
+      width: 100%;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 1.5px solid var(--red-primary);
+      margin-bottom: 1.8rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .finalize {
+      background: var(--red-primary);
+      color: #fff;
+      padding: 1rem 0;
+      border: none;
+      border-radius: 14px;
+      width: 100%;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 15px var(--shadow-light);
+      transition: background 0.3s ease, transform 0.15s ease;
+      user-select: none;
+    }
+
+    .finalize:hover {
+      background: var(--red-dark);
+      transform: translateY(-3px);
+    }
+
+    .finalize:active {
+      transform: translateY(0);
+    }
+
+    /* Scrollbar for cart */
+    .cart ul::-webkit-scrollbar {
+      width: 8px;
+    }
+    .cart ul::-webkit-scrollbar-track {
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+    .cart ul::-webkit-scrollbar-thumb {
+      background-color: var(--red-primary);
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      header { font-size: 2.2rem; }
+      .genre-section h2 { font-size: 1.7rem; }
+      .book h3 { font-size: 1.1rem; }
+      .book p { font-size: 1rem; }
+      .cart h3 { font-size: 1.6rem; }
+      .cart .total { font-size: 1.3rem; }
+      
+    }
+  </style>
+</head>
+<body>
+  <a href="login.html" id="btn-back-login" title="Voltar para Login">⬅ Voltar para Login</a>
+
+<style>
+  #btn-back-login {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: var(--red-primary);
+    color: #fff;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    padding: 0.75rem 1.2rem;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(230, 57, 70, 0.6);
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition:
+      background 0.3s ease,
+      transform 0.15s ease,
+      box-shadow 0.3s ease;
+    z-index: 1000;
+  }
+
+  #btn-back-login:hover {
+    background: var(--red-dark);
+    box-shadow: 0 8px 25px rgba(164, 22, 26, 0.9);
+    transform: scale(1.1) translateX(-4px);
+  }
+
+  #btn-back-login:active {
+    transform: scale(0.95) translateX(-2px);
+    box-shadow: 0 3px 10px rgba(164, 22, 26, 0.7);
+  }
+</style>
+  <header>📚 Loja Moderna de Livros</header>
+
+  <section class="genre-section">
+    <h2>🔥 Destaques</h2>
+    <div class="container" id="bookContainer">
+      <div class="book" data-name="The Diarios De Vampiro" data-price="39.90">
+        <img src="https://m.media-amazon.com/images/I/81iRry5N2lL._UF894,1000_QL80_DpWeblab_.jpg" alt="Livro 1" />
+        <h3>The Diarios De Vampiro</h3>
+        <p>R$ 39,90</p>
+        <button onclick="addToCart(this)">Adicionar ao Carrinho</button>
+      </div>
+
+      <div class="book" data-name="Banana de Pijama" data-price="29.90">
+        <img src="https://i.pinimg.com/originals/91/0f/08/910f089f1d056872866deb8709fc07de.jpg" alt="Livro 2" />
+        <h3>Banana de Pijama</h3>
+        <p>R$ 29,90</p>
+        <button onclick="addToCart(this)">Adicionar ao Carrinho</button>
+      </div>
+      
+      <div class="book" data-name="Através da Minha Janela" data-price="34.90">
+        <img src="https://m.media-amazon.com/images/I/81X1sXTKh2L._SL1500_.jpg" alt="Livro 3" />
+        <h3>Através da Minha Janela</h3>
+        <p>R$ 34,90</p>
+        <button onclick="addToCart(this)">Adicionar ao Carrinho</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="cart" id="cart">
+    <h3>🛒 Seu Carrinho</h3>
+    <ul id="cart-items">
+      <!-- Items aparecerão aqui -->
+    </ul>
+
+    <label for="payment-method">💳 Forma de Pagamento:</label>
+    <select id="payment-method">
+      <option value="" disabled selected>Selecione uma opção</option>
+      <option value="Cartão de Crédito">Cartão de Crédito</option>
+      <option value="Boleto">Boleto</option>
+      <option value="Pix">Pix</option>
+    </select>
+
+    <div class="total">💰 Total: R$ <span id="total">0.00</span></div>
+    <button class="finalize" onclick="checkout()">✅ Finalizar Compra</button>
+  </div>
+
+  <script>
+    const cartItems = [];
+    let total = 0;
+
+    function addToCart(button) {
+      const bookElement = button.closest('.book');
+      const name = bookElement.getAttribute('data-name');
+      const price = parseFloat(bookElement.getAttribute('data-price'));
+
+      // Adicionar ao carrinho
+      cartItems.push({ name, price });
+      total += price;
+
+      updateCart();
+      button.textContent = "✅ Adicionado!";
+      button.disabled = true;
+
+      setTimeout(() => {
+        button.textContent = "Adicionar ao Carrinho";
+        button.disabled = false;
+      }, 1500);
+    }
+
+    function updateCart() {
+      const list = document.getElementById('cart-items');
+      list.innerHTML = '';
+
+      cartItems.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `📘 ${item.name}`;
+
+        const priceSpan = document.createElement('span');
+        priceSpan.textContent = `R$ ${item.price.toFixed(2)}`;
+        priceSpan.style.fontWeight = 'bold';
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '✖';
+        removeBtn.style.marginLeft = '10px';
+        removeBtn.style.border = 'none';
+        removeBtn.style.background = 'transparent';
+        removeBtn.style.color = 'var(--red-dark)';
+        removeBtn.style.fontWeight = 'bold';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.title = 'Remover item';
+        removeBtn.onclick = () => removeFromCart(index);
+
+        li.appendChild(priceSpan);
+        li.appendChild(removeBtn);
+        list.appendChild(li);
+      });
+
+      document.getElementById('total').textContent = total.toFixed(2);
+    }
+
+    function removeFromCart(index) {
+      total -= cartItems[index].price;
+      cartItems.splice(index, 1);
+      updateCart();
+    }
+
+    function checkout() {
+      const paymentSelect = document.getElementById('payment-method');
+      const selectedPayment = paymentSelect.value;
+
+      if (cartItems.length === 0) {
+        alert('⚠️ Seu carrinho está vazio!');
+        return;
+      }
+
+      if (!selectedPayment) {
+        alert('⚠️ Por favor, selecione uma forma de pagamento.');
+        paymentSelect.focus();
+        return;
+      }
+
+      alert(`✅ Compra finalizada!\nTotal: R$ ${total.toFixed(2)}\nForma de pagamento: ${selectedPayment}`);
+
+      // Resetar tudo
+      cartItems.length = 0;
+      total = 0;
+      updateCart();
+      paymentSelect.value = "";
+    }
+  </script>
+</body>
+</html>
