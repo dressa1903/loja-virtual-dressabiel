@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Loja de Livros</title>
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #6c757d, #343a40);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* Esconde se precisar */
+.hidden {
+  display: none !important;
+}
+
+/* Login */
+.login-box {
+  background-color: #212529;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-box h2 {
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 1.2rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+
+.login-box button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #6c757d;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-box button:hover {
+  background-color: #5a6268;
+}
+
+.toggle {
+  margin-top: 1rem;
+  color: #0d6efd;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Loja */
+.loja {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+header {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.book {
+  background: #fff;
+  color: #333;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 200px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.book:hover {
+  transform: scale(1.05);
+}
+
+.book img {
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+}
+
+.cart {
+  background: #fff;
+  color: #333;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.cart ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.cart ul li {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+}
+
+.finalize {
+  background-color: #28a745;
+  border: none;
+  padding: 0.7rem;
+  width: 100%;
+  border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.finalize:hover {
+  background-color: #218838;
+}
+
+  </style>
+</head>
+
+<body>
+
+  <header>📚 Loja de Livros Online</header>
+
+  <!-- Tela de Login -->
+  <div class="login-box" id="authBox">
+    <h2 id="formTitle">Entrar na Loja</h2>
+    <div class="input-group" id="usernameGroup" style="display: none;">
+      <input type="text" id="username" placeholder="Nome de usuário" />
+    </div>
+    <div class="input-group">
+      <input type="email" id="email" placeholder="E-mail" />
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Senha" />
+    </div>
+    <button onclick="handleAuth()">Entrar</button>
+    <div class="toggle" onclick="toggleMode()">Criar uma conta</div>
+    <div class="message" id="messageBox"></div>
+  </div>
+
+  <!-- Loja (inicialmente escondida) -->
+  <div class="loja hidden" id="loja">
+    <header>📚 Loja de Livros Online</header>
+
+    <div class="container">
+      <div class="book">
+        <img src="https://via.placeholder.com/150x220?text=Livro+1" alt="Livro 1" />
+        <h3>O Segredo</h3>
+        <p>R$ 39,90</p>
+        <button onclick="addToCart('O Segredo', 39.90)">➕ Adicionar</button>
+        <button onclick="buyNow('O Segredo', 39.90)">💳 Comprar agora</button>
+      </div>
+
+      <div class="book">
+        <img src="https://via.placeholder.com/150x220?text=Livro+2" alt="Livro 2" />
+        <h3>Dom Casmurro</h3>
+        <p>R$ 29,90</p>
+        <button onclick="addToCart('Dom Casmurro', 29.90)">➕ Adicionar</button>
+        <button onclick="buyNow('Dom Casmurro', 29.90)">💳 Comprar agora</button>
+      </div>
+
+      <div class="book">
+        <img src="https://via.placeholder.com/150x220?text=Livro+3" alt="Livro 3" />
+        <h3>1984</h3>
+        <p>R$ 45,00</p>
+        <button onclick="addToCart('1984', 45.00)">➕ Adicionar</button>
+        <button onclick="buyNow('1984', 45.00)">💳 Comprar agora</button>
+      </div>
+    </div>
+
+    <div class="cart" id="cart">
+      <h3>🛒 Seu Carrinho</h3>
+      <ul id="cart-items"></ul>
+      <p class="total">💰 Total: R$ <span id="total">0.00</span></p>
+      <button class="finalize" onclick="checkout()">✅ Finalizar Compra</button>
+    </div>
+  </div>
+
+</div>
+
+
+  <script>
+
+  let isLogin = true;
+  let cartItems = [];
+  let total = 0;
+
+  function toggleMode() {
+    isLogin = !isLogin;
+    document.getElementById('formTitle').textContent = isLogin ? 'Entrar na Loja' : 'Criar Conta';
+    document.querySelector('#authBox button').textContent = isLogin ? 'Entrar' : 'Cadastrar';
+    document.querySelector('.toggle').textContent = isLogin ? 'Criar uma conta' : 'Já tem conta? Entrar';
+    document.getElementById('usernameGroup').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('messageBox').textContent = '';
+  }
+
+  function handleAuth() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const message = document.getElementById('messageBox');
+
+    if (!email || !password || (!isLogin && !username)) {
+      message.textContent = "⚠️ Preencha todos os campos.";
+      message.style.color = "orange";
+      return;
+    }
+
+    if (isLogin) {
+      message.textContent = "✅ Login simulado com sucesso!";
+      message.style.color = "lightgreen";
+    } else {
+      message.textContent = "🎉 Cadastro simulado com sucesso!";
+      message.style.color = "#00f5c4";
+    }
+
+    setTimeout(() => {
+      document.getElementById('authBox').classList.add('hidden');
+      document.getElementById('loja').classList.remove('hidden');
+      document.body.style.flexDirection = "column"; // para alinhar o conteúdo da loja corretamente
+    }, 1000);
+  }
+
+  function addToCart(book, price) {
+    cartItems.push({ name: book, price });
+    total += price;
+    updateCart();
+    alert(`✅ "${book}" adicionado ao carrinho!`);
+  }
+
+  function updateCart() {
+    const cartList = document.getElementById('cart-items');
+    cartList.innerHTML = '';
+    cartItems.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = `📘 ${item.name} — R$ ${item.price.toFixed(2)}`;
+      cartList.appendChild(li);
+    });
+    document.getElementById('total').textContent = total.toFixed(2);
+  }
+
+  function buyNow(book, price) {
+    alert(`🧾 Compra imediata concluída!\n\n📗 ${book}\n💳 R$ ${price.toFixed(2)}`);
+  }
+
+  function checkout() {
+  if (cartItems.length === 0) {
+    alert("⚠️ Carrinho vazio!");
+    return;
+  }
+
+  // Exibe o modal de pagamento
+  document.getElementById('paymentModal').classList.remove('hidden');
+}
+    {
+
+    const summary = cartItems.map(item => `• ${item.name} — R$ ${item.price.toFixed(2)}`).join('\n');
+    alert(`🎉 Compra finalizada com sucesso:\n\n${summary}\n\n💰 Total: R$ ${total.toFixed(2)}`);
+
+    cartItems = [];
+    total = 0;
+    updateCart();
+  }
+  function handlePaymentChange() {
+  const method = document.getElementById('paymentMethod').value;
+  const qr = document.getElementById('pixQR');
+  qr.classList.toggle('hidden', method !== 'pix');
+}
+
+function confirmPayment() {
+  const method = document.getElementById('paymentMethod').value;
+  const paymentText = {
+    pix: "💸 Pagamento via Pix confirmado!",
+    cartao: "💳 Pagamento com Cartão de Crédito confirmado!",
+    boleto: "📄 Boleto gerado com sucesso!"
+  };
+
+  const summary = cartItems.map(item => `• ${item.name} — R$ ${item.price.toFixed(2)}`).join('\n');
+  const totalText = `💰 Total: R$ ${total.toFixed(2)}`;
+
+  alert(`${paymentText[method]}\n\nItens:\n${summary}\n\n${totalText}`);
+
+  cartItems = [];
+  total = 0;
+  updateCart();
+  document.getElementById('paymentModal').classList.add('hidden');
+  document.getElementById('pixQR').classList.add('hidden');
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.add('hidden');
+  document.getElementById('pixQR').classList.add('hidden');
+}
+function confirmPayment() {
+  const method = document.getElementById('paymentMethod').value;
+  const paymentText = {
+    pix: "💸 Pagamento via Pix confirmado!",
+    cartao: "💳 Pagamento com Cartão de Crédito confirmado!",
+    boleto: "📄 Boleto gerado com sucesso!"
+  };
+
+  const summary = cartItems.map(item => `• ${item.name} — R$ ${item.price.toFixed(2)}`).join('\n');
+  const totalText = `💰 Total: R$ ${total.toFixed(2)}`;
+
+  alert(`${paymentText[method]}\n\nItens:\n${summary}\n\n${totalText}`);
+
+  // Limpa carrinho e esconde modal
+  cartItems = [];
+  total = 0;
+  updateCart();
+  document.getElementById('paymentModal').classList.add('hidden');
+}
+function handlePaymentChange() {
+  const method = document.getElementById('paymentMethod').value;
+  const qr = document.getElementById('pixQR');
+  qr.classList.toggle('hidden', method !== 'pix');
+}
+
+function confirmPayment() {
+  const method = document.getElementById('paymentMethod').value;
+  const paymentText = {
+    pix: "💸 Pagamento via Pix confirmado!",
+    cartao: "💳 Pagamento com Cartão de Crédito confirmado!",
+    boleto: "📄 Boleto gerado com sucesso!"
+  };
+
+  const summary = cartItems.map(item => `• ${item.name} — R$ ${item.price.toFixed(2)}`).join('\n');
+  const totalText = `💰 Total: R$ ${total.toFixed(2)}`;
+
+  alert(`${paymentText[method]}\n\nItens:\n${summary}\n\n${totalText}`);
+
+  cartItems = [];
+  total = 0;
+  updateCart();
+  document.getElementById('paymentModal').classList.add('hidden');
+  document.getElementById('pixQR').classList.add('hidden');
+}
+
+function closeModal() {
+  document.getElementById('paymentModal').classList.add('hidden');
+  document.getElementById('pixQR').classList.add('hidden');
+}
+
+</script>
+<!-- Modal de Pagamento Estilizado -->
+<div id="paymentModal" class="hidden" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+  <div style="
+    background: #fff;
+    color: #000;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+  ">
+    <h3 style="margin-bottom: 1rem;">Escolha a forma de pagamento</h3>
+
+    <select id="paymentMethod" onchange="handlePaymentChange()" style="
+      width: 100%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    ">
+      <option value="pix">💸 Pix</option>
+      <option value="cartao">💳 Cartão de Crédito</option>
+      <option value="boleto">📄 Boleto</option>
+    </select>
+
+    <!-- QR CODE FAKE PARA PIX -->
+    <div id="pixQR" class="hidden" style="margin-bottom: 1rem;">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=PagamentoPixSimulado&size=180x180" alt="QR Code Pix">
+      <p style="margin-top: 0.5rem;">Escaneie o QR Code com seu app de banco</p>
+    </div>
+
+    <button onclick="confirmPayment()" style="
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    ">✅ Confirmar Pagamento</button>
+
+    <button onclick="closeModal()" style="
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: #999;
+      cursor: pointer;
+    ">&times;</button>
+  </div>
+</div>
+</body>
